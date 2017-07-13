@@ -5,6 +5,7 @@ import io.netty.channel.local.LocalAddress;
 import java.net.InetSocketAddress;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.skywalking.apm.mock.collector.service.ReceiveDataService;
 import org.skywalking.apm.mock.collector.service.GrpcAddressHttpService;
 import org.skywalking.apm.mock.collector.service.MockApplicationRegisterService;
 import org.skywalking.apm.mock.collector.service.MockInstanceDiscoveryService;
@@ -26,6 +27,7 @@ public class Main {
         ServletContextHandler servletContextHandler = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
         servletContextHandler.setContextPath(contextPath);
         servletContextHandler.addServlet(GrpcAddressHttpService.class, GrpcAddressHttpService.SERVLET_PATH);
+        servletContextHandler.addServlet(ReceiveDataService.class, ReceiveDataService.SERVLET_PATH);
         jettyServer.setHandler(servletContextHandler);
         jettyServer.start();
     }
