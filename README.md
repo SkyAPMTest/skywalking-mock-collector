@@ -1,4 +1,4 @@
-# sky-walking collector simulator for autematic-agent-test
+# sky-walking collector simulator for automatic-agent-test
 
 ## Why need a collector simulator?
 Since sky-walking begun more and more complex from 3.0, testing all agent feature in manually seems impossible, and the maintainer team has less time to do so.
