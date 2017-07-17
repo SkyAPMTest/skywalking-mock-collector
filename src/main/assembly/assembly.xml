@@ -22,6 +22,14 @@
             <fileMode>0755</fileMode>
         </fileSet>
         <fileSet>
+            <directory>src/main/resources</directory>
+            <includes>
+                <include>collector.properties</include>
+                <include>log4j2.xml</include>
+            </includes>
+            <outputDirectory>/config</outputDirectory>
+        </fileSet>
+        <fileSet>
             <directory>${project.build.directory}</directory>
             <outputDirectory>/libs</outputDirectory>
             <includes>

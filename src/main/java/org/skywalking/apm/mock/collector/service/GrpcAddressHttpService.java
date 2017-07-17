@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.skywalking.apm.mock.collector.util.ConfigReader;
 
 public class GrpcAddressHttpService extends HttpServlet {
 
@@ -15,7 +16,7 @@ public class GrpcAddressHttpService extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         JsonArray jsonArray = new JsonArray();
-        jsonArray.add("127.0.0.1:19876");
+        jsonArray.add(ConfigReader.getGrpcBindHost() + ":" + ConfigReader.getGrpcBindPort());
         resp.setContentType("text/json");
         resp.setCharacterEncoding("utf-8");
         resp.setStatus(200);

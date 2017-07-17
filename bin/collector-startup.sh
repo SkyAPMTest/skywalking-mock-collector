@@ -13,4 +13,4 @@ do
     CLASSPATH="$i:$CLASSPATH"
 done
 
-$_RUNJAVA ${JAVA_OPTS} -classpath $CLASSPATH org.skywalking.apm.mock.collector.Main 2>&1 > /dev/null &
+$_RUNJAVA ${JAVA_OPTS} -classpath $CLASSPATH org.skywalking.apm.mock.collector.Main

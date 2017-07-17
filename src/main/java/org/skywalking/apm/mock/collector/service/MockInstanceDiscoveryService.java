@@ -1,6 +1,9 @@
 package org.skywalking.apm.mock.collector.service;
 
 import io.grpc.stub.StreamObserver;
+import java.util.concurrent.atomic.AtomicInteger;
+import org.skywalking.apm.mock.collector.entity.RegistryItem;
+import org.skywalking.apm.mock.collector.entity.ValidateData;
 import org.skywalking.apm.network.proto.ApplicationInstance;
 import org.skywalking.apm.network.proto.ApplicationInstanceHeartbeat;
 import org.skywalking.apm.network.proto.ApplicationInstanceMapping;
@@ -9,6 +12,8 @@ import org.skywalking.apm.network.proto.Downstream;
 import org.skywalking.apm.network.proto.InstanceDiscoveryServiceGrpc;
 
 public class MockInstanceDiscoveryService extends InstanceDiscoveryServiceGrpc.InstanceDiscoveryServiceImplBase {
+    private AtomicInteger instanceSequence = new AtomicInteger();
+
     @Override
     public void registerRecover(ApplicationInstanceRecover request, StreamObserver<Downstream> responseObserver) {
         responseObserver.onNext(Downstream.getDefaultInstance());
@@ -16,13 +21,18 @@ public class MockInstanceDiscoveryService extends InstanceDiscoveryServiceGrpc.I
     }
 
     @Override public void heartbeat(ApplicationInstanceHeartbeat request, StreamObserver<Downstream> responseObserver) {
+        ValidateData.INSTANCE.getRegistryItem().registryHeartBeat(new RegistryItem.HeartBeat(request.getApplicationInstanceId()));
         responseObserver.onNext(Downstream.getDefaultInstance());
         responseObserver.onCompleted();
     }
 
     @Override
     public void register(ApplicationInstance request, StreamObserver<ApplicationInstanceMapping> responseObserver) {
-        responseObserver.onNext(ApplicationInstanceMapping.getDefaultInstance());
+        int instanceId = instanceSequence.incrementAndGet();
+        ValidateData.INSTANCE.getRegistryItem().registryInstance(new RegistryItem.Instance(request.getApplicationId(), instanceId));
+
+        responseObserver.onNext(ApplicationInstanceMapping.newBuilder().setApplicationId(request.getApplicationId())
+            .setApplicationInstanceId(instanceId).build());
         responseObserver.onCompleted();
     }
 }
