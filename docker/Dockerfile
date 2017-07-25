@@ -6,6 +6,7 @@ ENV GRPC_BIND_HOST=127.0.0.1 \
 ADD skywalking-mock-collector.tar.gz /usr/local
 ADD config.properties /usr/local/skywalking-mock-collector/config/config.properties
 EXPOSE 12800
+EXPOSE 5005
 
 ADD docker-entrypoint.sh /
 RUN chmod +x /docker-entrypoint.sh

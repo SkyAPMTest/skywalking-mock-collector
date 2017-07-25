@@ -2,14 +2,15 @@ package org.skywalking.apm.mock.collector.entity;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.skywalking.apm.network.proto.UniqueId;
 
 public class Segment {
     private String segmentId;
     private List<Span> spans;
     private List<SegmentRef> refs;
 
-    public Segment(String segmentId) {
-        this.segmentId = segmentId;
+    public Segment(UniqueId segmentId) {
+        this.segmentId = segmentId.getIdParts(0) + "" + segmentId.getIdParts(1) + "" + segmentId.getIdParts(2);
         spans = new ArrayList<>();
         refs = new ArrayList<>();
     }
@@ -20,8 +21,8 @@ public class Segment {
         private String networkAddress;
         private String entryServiceName;
 
-        public SegmentRef(String parentSegmentId) {
-            this.parentSegmentId = parentSegmentId;
+        public SegmentRef(UniqueId parentSegmentId) {
+            this.parentSegmentId = parentSegmentId.getIdParts(0) + "" + parentSegmentId.getIdParts(1) + "" + parentSegmentId.getIdParts(2);
         }
 
         public int getSpanId() {
@@ -206,11 +207,11 @@ public class Segment {
     public static class SegmentRefBuilder {
         private SegmentRef segmentRef;
 
-        private SegmentRefBuilder(String parentSegmentId) {
+        private SegmentRefBuilder(UniqueId parentSegmentId) {
             segmentRef = new SegmentRef(parentSegmentId);
         }
 
-        public static SegmentRefBuilder newBuilder(String parentSegmentId) {
+        public static SegmentRefBuilder newBuilder(UniqueId parentSegmentId) {
             return new SegmentRefBuilder(parentSegmentId);
         }
 
@@ -237,11 +238,12 @@ public class Segment {
     public static class SegmentBuilder {
         private Segment segment;
 
-        private SegmentBuilder(String segmentId) {
+        private SegmentBuilder(UniqueId segmentId) {
             segment = new Segment(segmentId);
         }
 
-        public static SegmentBuilder newBuilder(String segmentId) {
+        public static SegmentBuilder newBuilder(UniqueId segmentId) {
+
             return new SegmentBuilder(segmentId);
         }
 

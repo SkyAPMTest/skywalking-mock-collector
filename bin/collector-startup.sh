@@ -13,4 +13,6 @@ do
     CLASSPATH="$i:$CLASSPATH"
 done
 
-$_RUNJAVA ${JAVA_OPTS} -classpath $CLASSPATH org.skywalking.apm.mock.collector.Main
+JAVA_OPTS="${JAVA_OPTS} -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 "
+
+$_RUNJAVA ${JAVA_OPTS}  -classpath $CLASSPATH org.skywalking.apm.mock.collector.Main
