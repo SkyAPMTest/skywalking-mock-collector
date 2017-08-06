@@ -2,6 +2,7 @@ package org.skywalking.apm.mock.collector.entity;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.skywalking.apm.network.proto.TraceSegmentReference;
 import org.skywalking.apm.network.proto.UniqueId;
 
 public class Segment {
@@ -16,21 +17,37 @@ public class Segment {
     }
 
     public static class SegmentRef {
-        private int spanId;
-        private String parentSegmentId;
+        private int parentServiceId;
+        private String parentServiceName;
+        private int networkAddressId;
+        private int entryServiceId;
+        private String refType;
+        private int parentSpanId;
+        private String parentTraceSegmentId;
+        private int parentApplicationInstanceId;
         private String networkAddress;
         private String entryServiceName;
 
-        public SegmentRef(UniqueId parentSegmentId) {
-            this.parentSegmentId = parentSegmentId.getIdParts(0) + "" + parentSegmentId.getIdParts(1) + "" + parentSegmentId.getIdParts(2);
+        public SegmentRef(TraceSegmentReference ref) {
+            UniqueId uniqueId = ref.getParentTraceSegmentId();
+            this.parentTraceSegmentId = uniqueId.getIdParts(0) + "" + uniqueId.getIdParts(1) + "" + uniqueId.getIdParts(2);
+            this.refType = ref.getRefType().toString();
+            this.parentSpanId = ref.getParentSpanId();
+            this.entryServiceId = ref.getEntryServiceId();
+            this.networkAddressId = ref.getNetworkAddressId();
+            this.parentApplicationInstanceId = ref.getParentApplicationInstanceId();
+            this.parentServiceId = ref.getParentServiceId();
+            this.parentServiceName = ref.getParentServiceName();
+            this.networkAddress = ref.getNetworkAddress();
+            this.entryServiceName = ref.getEntryServiceName();
         }
 
-        public int getSpanId() {
-            return spanId;
+        public int getParentSpanId() {
+            return parentSpanId;
         }
 
-        public String getParentSegmentId() {
-            return parentSegmentId;
+        public String getParentTraceSegmentId() {
+            return parentTraceSegmentId;
         }
 
         public String getNetworkAddress() {
@@ -39,6 +56,30 @@ public class Segment {
 
         public String getEntryServiceName() {
             return entryServiceName;
+        }
+
+        public int getParentServiceId() {
+            return parentServiceId;
+        }
+
+        public String getParentServiceName() {
+            return parentServiceName;
+        }
+
+        public int getNetworkAddressId() {
+            return networkAddressId;
+        }
+
+        public int getEntryServiceId() {
+            return entryServiceId;
+        }
+
+        public String getRefType() {
+            return refType;
+        }
+
+        public int getParentApplicationInstanceId() {
+            return parentApplicationInstanceId;
         }
     }
 
@@ -207,27 +248,12 @@ public class Segment {
     public static class SegmentRefBuilder {
         private SegmentRef segmentRef;
 
-        private SegmentRefBuilder(UniqueId parentSegmentId) {
-            segmentRef = new SegmentRef(parentSegmentId);
+        private SegmentRefBuilder(TraceSegmentReference reference) {
+            segmentRef = new SegmentRef(reference);
         }
 
-        public static SegmentRefBuilder newBuilder(UniqueId parentSegmentId) {
-            return new SegmentRefBuilder(parentSegmentId);
-        }
-
-        public SegmentRefBuilder spanId(int spanId) {
-            segmentRef.spanId = spanId;
-            return this;
-        }
-
-        public SegmentRefBuilder networkAddress(String networkAddress) {
-            segmentRef.networkAddress = networkAddress;
-            return this;
-        }
-
-        public SegmentRefBuilder entryServiceName(String entryServiceName) {
-            segmentRef.entryServiceName = entryServiceName;
-            return this;
+        public static SegmentRefBuilder newBuilder(TraceSegmentReference reference) {
+            return new SegmentRefBuilder(reference);
         }
 
         public SegmentRef build() {

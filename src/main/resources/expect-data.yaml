@@ -18,10 +18,16 @@ expectData:
       -
         segmentId: not null
         refs:
-          - spanId: 1
-          - segmentId: ${test-applicationCode2[0]}
-          - networkaddress: xxx
-          - entryServiceName: xxx
+          - parentSpanId: 1
+          - parentTraceSegmentId: ${test-applicationCode2[0]}
+          - networkAddress: xxx
+          - parentServiceId: 1
+          - parentServiceName: not null
+          - networkAddressId: 1
+          - entryServiceId: 1
+          - refType: xx
+          - parentApplicationInstanceId: 1
+          - entryServiceName: xx
         spans:
           -
             operationName: testOperationName

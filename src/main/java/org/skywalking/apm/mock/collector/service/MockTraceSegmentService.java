@@ -52,9 +52,7 @@ public class MockTraceSegmentService extends TraceSegmentServiceGrpc.TraceSegmen
                     }
 
                     for (TraceSegmentReference ref : traceSegmentObject.getRefsList()) {
-                        Segment.SegmentRef segmentRef = Segment.SegmentRefBuilder.newBuilder(ref.getParentTraceSegmentId())
-                            .entryServiceName(ref.getEntryServiceName()).networkAddress(ref.getNetworkAddress())
-                            .spanId(ref.getParentSpanId()).build();
+                        Segment.SegmentRef segmentRef = Segment.SegmentRefBuilder.newBuilder(ref).build();
                         segmentBuilder.addRefs(segmentRef);
                     }
 
