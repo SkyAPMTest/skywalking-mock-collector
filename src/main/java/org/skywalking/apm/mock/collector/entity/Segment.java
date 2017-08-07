@@ -41,7 +41,7 @@ public class Segment {
             this.parentServiceName = ref.getParentServiceName();
             this.networkAddress = ref.getNetworkAddress();
             this.entryServiceName = ref.getEntryServiceName();
-            this.entryApplicationInstanceId = ref.getEntryServiceApplicationInstanceId();
+            this.entryApplicationInstanceId = ref.getEntryApplicationInstanceId();
         }
 
         public int getParentSpanId() {
