@@ -27,6 +27,7 @@ public class Segment {
         private int parentApplicationInstanceId;
         private String networkAddress;
         private String entryServiceName;
+        private int entryApplicationInstanceId;
 
         public SegmentRef(TraceSegmentReference ref) {
             UniqueId uniqueId = ref.getParentTraceSegmentId();
@@ -40,6 +41,7 @@ public class Segment {
             this.parentServiceName = ref.getParentServiceName();
             this.networkAddress = ref.getNetworkAddress();
             this.entryServiceName = ref.getEntryServiceName();
+            this.entryApplicationInstanceId = ref.getEntryServiceApplicationInstanceId();
         }
 
         public int getParentSpanId() {
@@ -80,6 +82,10 @@ public class Segment {
 
         public int getParentApplicationInstanceId() {
             return parentApplicationInstanceId;
+        }
+
+        public int getEntryApplicationInstanceId() {
+            return entryApplicationInstanceId;
         }
     }
 
