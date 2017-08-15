@@ -2,6 +2,7 @@ package org.skywalking.apm.mock.collector.entity;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.skywalking.apm.network.proto.KeyWithStringValue;
 import org.skywalking.apm.network.proto.TraceSegmentReference;
 import org.skywalking.apm.network.proto.UniqueId;
 
@@ -221,8 +222,12 @@ public class Segment {
             return this;
         }
 
-        public SpanBuilder logs(LogEvent logEvent) {
-            span.logs.add(logEvent);
+        public SpanBuilder logEvent(List<KeyWithStringValue> eventMessage) {
+            LogEvent event = new LogEvent();
+            for (KeyWithStringValue value : eventMessage) {
+                event.logEvent.add(new KeyValuePair(value.getKey(), value.getValue()));
+            }
+            span.logs.add(event);
             return this;
         }
 

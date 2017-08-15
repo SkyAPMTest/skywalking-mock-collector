@@ -38,10 +38,7 @@ public class MockTraceSegmentService extends TraceSegmentServiceGrpc.TraceSegmen
                             .peer(spanObject.getPeer()).peerId(spanObject.getPeerId()).operationId(spanObject.getOperationNameId());
 
                         for (LogMessage logMessage : spanObject.getLogsList()) {
-                            for (KeyWithStringValue pairValue : logMessage.getDataList()) {
-                                spanBuilder.logs(Segment.LogEventBuilder.newBuilder().addLog(pairValue.getKey(),
-                                    pairValue.getValue()).build());
-                            }
+                            spanBuilder.logEvent(logMessage.getDataList());
                         }
 
                         for (KeyWithStringValue tags : spanObject.getTagsList()) {
