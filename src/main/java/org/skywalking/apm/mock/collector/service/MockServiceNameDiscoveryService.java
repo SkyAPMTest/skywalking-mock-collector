@@ -19,7 +19,7 @@ public class MockServiceNameDiscoveryService extends ServiceNameDiscoveryService
     @Override
     public void discovery(ServiceNameCollection request,
         StreamObserver<ServiceNameMappingCollection> responseObserver) {
-        logger.debug("Receive service name");
+        logger.info("Receive service name");
         ServiceNameMappingCollection.Builder builder = ServiceNameMappingCollection.newBuilder();
         for (ServiceNameElement element : request.getElementsList()) {
             builder.addElements(ServiceNameMappingElement.newBuilder().setElement(ServiceNameElement.

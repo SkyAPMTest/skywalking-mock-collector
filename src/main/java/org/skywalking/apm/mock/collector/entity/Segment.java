@@ -7,12 +7,16 @@ import org.skywalking.apm.network.proto.TraceSegmentReference;
 import org.skywalking.apm.network.proto.UniqueId;
 
 public class Segment {
+    private int applicationId;
+    private int instanceId;
     private String segmentId;
     private List<Span> spans;
     private List<SegmentRef> refs;
 
-    public Segment(UniqueId segmentId) {
+    public Segment(UniqueId segmentId, int applicationId, int instanceId) {
         this.segmentId = segmentId.getIdParts(0) + "" + segmentId.getIdParts(1) + "" + segmentId.getIdParts(2);
+        this.applicationId = applicationId;
+        this.instanceId = instanceId;
         spans = new ArrayList<>();
         refs = new ArrayList<>();
     }
@@ -275,13 +279,13 @@ public class Segment {
     public static class SegmentBuilder {
         private Segment segment;
 
-        private SegmentBuilder(UniqueId segmentId) {
-            segment = new Segment(segmentId);
+        private SegmentBuilder(UniqueId segmentId, int applicationId, int instanceId) {
+            segment = new Segment(segmentId, applicationId, instanceId);
         }
 
-        public static SegmentBuilder newBuilder(UniqueId segmentId) {
+        public static SegmentBuilder newBuilder(UniqueId segmentId, int applicationId, int instanceId) {
 
-            return new SegmentBuilder(segmentId);
+            return new SegmentBuilder(segmentId, applicationId, instanceId);
         }
 
         public SegmentBuilder addSpan(Span span) {

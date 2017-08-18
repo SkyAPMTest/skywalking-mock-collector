@@ -24,7 +24,7 @@
         <fileSet>
             <directory>src/main/resources</directory>
             <includes>
-                <include>collector.properties</include>
+                <include>*.properties</include>
                 <include>log4j2.xml</include>
             </includes>
             <outputDirectory>/config</outputDirectory>

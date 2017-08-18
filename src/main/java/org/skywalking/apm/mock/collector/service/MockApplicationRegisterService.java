@@ -22,7 +22,7 @@ public class MockApplicationRegisterService extends ApplicationRegisterServiceGr
 
     @Override
     public void register(Application request, StreamObserver<ApplicationMapping> responseObserver) {
-        logger.debug("receive application register.");
+        logger.info("receive application register.");
         ApplicationMapping.Builder builder = ApplicationMapping.newBuilder();
         for (String applicationCode : request.getApplicationCodeList()) {
             Integer applicationId = applicationMapping.get(applicationCode);

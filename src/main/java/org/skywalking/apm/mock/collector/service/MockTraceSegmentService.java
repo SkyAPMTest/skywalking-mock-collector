@@ -23,7 +23,7 @@ public class MockTraceSegmentService extends TraceSegmentServiceGrpc.TraceSegmen
     public StreamObserver<UpstreamSegment> collect(final StreamObserver<Downstream> responseObserver) {
         return new StreamObserver<UpstreamSegment>() {
             public void onNext(UpstreamSegment value) {
-                ValidateData.INSTANCE.getSegmentItem().addSegmentItem();
+                ValidateData.INSTANCE.getSegmentItem().addSegmentItem(value.getSegment());
             }
 
             public void onError(Throwable t) {
