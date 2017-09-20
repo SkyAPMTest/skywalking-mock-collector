@@ -11,7 +11,7 @@ import org.skywalking.apm.mock.collector.util.ConfigReader;
 
 public class GrpcAddressHttpService extends HttpServlet {
 
-    public static String SERVLET_PATH = "/grpc/addresses";
+    public static String SERVLET_PATH = "/agentstream/grpc";
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
