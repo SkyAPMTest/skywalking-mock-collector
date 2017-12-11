@@ -2,14 +2,14 @@ package org.skywalking.apm.mock.collector.service;
 
 import io.grpc.stub.StreamObserver;
 import java.util.concurrent.atomic.AtomicInteger;
+import org.apache.skywalking.apm.network.proto.ApplicationInstance;
+import org.apache.skywalking.apm.network.proto.ApplicationInstanceHeartbeat;
+import org.apache.skywalking.apm.network.proto.ApplicationInstanceMapping;
+import org.apache.skywalking.apm.network.proto.ApplicationInstanceRecover;
+import org.apache.skywalking.apm.network.proto.Downstream;
+import org.apache.skywalking.apm.network.proto.InstanceDiscoveryServiceGrpc;
 import org.skywalking.apm.mock.collector.entity.RegistryItem;
 import org.skywalking.apm.mock.collector.entity.ValidateData;
-import org.skywalking.apm.network.proto.ApplicationInstance;
-import org.skywalking.apm.network.proto.ApplicationInstanceHeartbeat;
-import org.skywalking.apm.network.proto.ApplicationInstanceMapping;
-import org.skywalking.apm.network.proto.ApplicationInstanceRecover;
-import org.skywalking.apm.network.proto.Downstream;
-import org.skywalking.apm.network.proto.InstanceDiscoveryServiceGrpc;
 
 public class MockInstanceDiscoveryService extends InstanceDiscoveryServiceGrpc.InstanceDiscoveryServiceImplBase {
     private AtomicInteger instanceSequence = new AtomicInteger();

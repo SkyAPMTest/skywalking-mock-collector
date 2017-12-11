@@ -4,13 +4,13 @@ import io.grpc.stub.StreamObserver;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.skywalking.apm.network.proto.ServiceNameCollection;
+import org.apache.skywalking.apm.network.proto.ServiceNameDiscoveryServiceGrpc;
+import org.apache.skywalking.apm.network.proto.ServiceNameElement;
+import org.apache.skywalking.apm.network.proto.ServiceNameMappingCollection;
+import org.apache.skywalking.apm.network.proto.ServiceNameMappingElement;
 import org.skywalking.apm.mock.collector.entity.RegistryItem;
 import org.skywalking.apm.mock.collector.entity.ValidateData;
-import org.skywalking.apm.network.proto.ServiceNameCollection;
-import org.skywalking.apm.network.proto.ServiceNameDiscoveryServiceGrpc;
-import org.skywalking.apm.network.proto.ServiceNameElement;
-import org.skywalking.apm.network.proto.ServiceNameMappingCollection;
-import org.skywalking.apm.network.proto.ServiceNameMappingElement;
 
 public class MockServiceNameDiscoveryService extends ServiceNameDiscoveryServiceGrpc.ServiceNameDiscoveryServiceImplBase {
     private Logger logger = LogManager.getLogger(MockTraceSegmentService.class);
