@@ -47,7 +47,7 @@ public class Span {
     private int peerId;
     private List<KeyValuePair> tags = new ArrayList<>();
     private List<LogEvent> logs = new ArrayList<>();
-    private List<SegmentRef> segmentRefs = new ArrayList<>();
+    private List<SegmentRef> refs = new ArrayList<>();
 
     public static class LogEvent {
         private List<KeyValuePair> logEvent;
@@ -81,11 +81,11 @@ public class Span {
         }
 
         public SpanBuilder ref(SegmentRef segmentRefBuilder) {
-            if (segmentRefs == null) {
-                segmentRefs = new ArrayList<>();
+            if (refs == null) {
+                refs = new ArrayList<>();
             }
 
-            segmentRefs.add(segmentRefBuilder);
+            refs.add(segmentRefBuilder);
             return this;
         }
 
