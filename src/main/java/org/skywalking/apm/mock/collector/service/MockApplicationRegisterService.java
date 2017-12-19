@@ -5,8 +5,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.skywalking.apm.network.proto.Application;
-import org.apache.skywalking.apm.network.proto.ApplicationMapping;
+import org.apache.skywalking.apm.network.proto.Applications;
+import org.apache.skywalking.apm.network.proto.ApplicationMappings;
 import org.apache.skywalking.apm.network.proto.ApplicationRegisterServiceGrpc;
 import org.apache.skywalking.apm.network.proto.KeyWithIntegerValue;
 import org.skywalking.apm.mock.collector.entity.RegistryItem;
@@ -20,12 +20,11 @@ public class MockApplicationRegisterService extends ApplicationRegisterServiceGr
     private AtomicInteger currentId = new AtomicInteger(1);
     private ConcurrentHashMap<String, Integer> applicationMapping = new ConcurrentHashMap<String, Integer>();
 
-    @Override
-    public void register(Application request, StreamObserver<ApplicationMapping> responseObserver) {
+    @Override public void batchRegister(Applications request, StreamObserver<ApplicationMappings> responseObserver) {
         logger.debug("receive application register.");
-        ApplicationMapping.Builder builder = ApplicationMapping.newBuilder();
-        for (String applicationCode : request.getApplicationCodeList()) {
-            if (applicationCode.startsWith("localhost") || applicationCode.startsWith("127.0.0.1")) {
+        ApplicationMappings.Builder builder = ApplicationMappings.newBuilder();
+        for (String applicationCode : request.getApplicationCodesList()) {
+            if (applicationCode.startsWith("localhost") || applicationCode.startsWith("127.0.0.1") || applicationCode.contains(":")) {
                 continue;
             }
             Integer applicationId = applicationMapping.get(applicationCode);
@@ -36,10 +35,9 @@ public class MockApplicationRegisterService extends ApplicationRegisterServiceGr
                     applicationId));
             }
 
-            builder.addApplication(KeyWithIntegerValue.newBuilder().setKey(applicationCode).setValue(applicationId));
+            builder.addApplications(KeyWithIntegerValue.newBuilder().setKey(applicationCode).setValue(applicationId));
         }
         responseObserver.onNext(builder.build());
         responseObserver.onCompleted();
     }
-
 }

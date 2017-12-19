@@ -129,8 +129,8 @@ public class Span {
         private int entryApplicationInstanceId;
 
         public SegmentRef(TraceSegmentReference ref) {
-            UniqueId uniqueId = ref.getParentTraceSegmentId();
-            this.parentTraceSegmentId = uniqueId.getIdParts(0) + "" + uniqueId.getIdParts(1) + "" + uniqueId.getIdParts(2);
+            UniqueId segmentUniqueId = ref.getParentTraceSegmentId();
+            this.parentTraceSegmentId = String.join(".", Long.toString(segmentUniqueId.getIdParts(0)), Long.toString(segmentUniqueId.getIdParts(1)), Long.toString(segmentUniqueId.getIdParts(2)));
             this.refType = ref.getRefType().toString();
             this.parentSpanId = ref.getParentSpanId();
             this.entryServiceId = ref.getEntryServiceId();
