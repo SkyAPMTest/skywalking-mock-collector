@@ -6,6 +6,7 @@ import java.net.InetSocketAddress;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.skywalking.apm.mock.collector.service.ClearReceiveDataService;
+import org.skywalking.apm.mock.collector.service.MockNetworkAddressRegisterService;
 import org.skywalking.apm.mock.collector.service.MockServiceNameDiscoveryService;
 import org.skywalking.apm.mock.collector.service.ReceiveDataService;
 import org.skywalking.apm.mock.collector.service.GrpcAddressHttpService;
@@ -21,6 +22,7 @@ public class Main {
             .addService(new MockApplicationRegisterService())
             .addService(new MockInstanceDiscoveryService())
             .addService(new MockJVMMetricsService())
+            .addService(new MockNetworkAddressRegisterService())
             .addService(new MockServiceNameDiscoveryService())
             .addService(new MockTraceSegmentService()).build().start();
 

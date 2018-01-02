@@ -24,7 +24,7 @@ public class MockApplicationRegisterService extends ApplicationRegisterServiceGr
         logger.debug("receive application register.");
         ApplicationMappings.Builder builder = ApplicationMappings.newBuilder();
         for (String applicationCode : request.getApplicationCodesList()) {
-            if (applicationCode.startsWith("localhost") || applicationCode.startsWith("127.0.0.1") || applicationCode.contains(":")) {
+            if (applicationCode.startsWith("localhost") || applicationCode.startsWith("127.0.0.1") || applicationCode.contains(":") || applicationCode.contains("/")) {
                 continue;
             }
             Integer applicationId = applicationMapping.get(applicationCode);

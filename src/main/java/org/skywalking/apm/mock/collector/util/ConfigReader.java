@@ -12,7 +12,7 @@ public class ConfigReader {
         try {
             config.load(inputStream);
         } catch (IOException e) {
-            System.err.println("Failed to load configuration.");
+            System.err.println("Failed to load config.");
             System.exit(-1);
         }
     }

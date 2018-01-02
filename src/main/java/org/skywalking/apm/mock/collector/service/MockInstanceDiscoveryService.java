@@ -5,7 +5,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.apache.skywalking.apm.network.proto.ApplicationInstance;
 import org.apache.skywalking.apm.network.proto.ApplicationInstanceHeartbeat;
 import org.apache.skywalking.apm.network.proto.ApplicationInstanceMapping;
-import org.apache.skywalking.apm.network.proto.ApplicationInstanceRecover;
 import org.apache.skywalking.apm.network.proto.Downstream;
 import org.apache.skywalking.apm.network.proto.InstanceDiscoveryServiceGrpc;
 import org.skywalking.apm.mock.collector.entity.RegistryItem;
@@ -13,12 +12,6 @@ import org.skywalking.apm.mock.collector.entity.ValidateData;
 
 public class MockInstanceDiscoveryService extends InstanceDiscoveryServiceGrpc.InstanceDiscoveryServiceImplBase {
     private AtomicInteger instanceSequence = new AtomicInteger();
-
-    @Override
-    public void registerRecover(ApplicationInstanceRecover request, StreamObserver<Downstream> responseObserver) {
-        responseObserver.onNext(Downstream.getDefaultInstance());
-        responseObserver.onCompleted();
-    }
 
     @Override public void heartbeat(ApplicationInstanceHeartbeat request, StreamObserver<Downstream> responseObserver) {
         ValidateData.INSTANCE.getRegistryItem().registryHeartBeat(new RegistryItem.HeartBeat(request.getApplicationInstanceId()));
