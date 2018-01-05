@@ -19,8 +19,8 @@ public class MockInstanceDiscoveryService extends InstanceDiscoveryServiceGrpc.I
         responseObserver.onCompleted();
     }
 
-    @Override
-    public void register(ApplicationInstance request, StreamObserver<ApplicationInstanceMapping> responseObserver) {
+    @Override public void registerInstance(ApplicationInstance request,
+        StreamObserver<ApplicationInstanceMapping> responseObserver) {
         int instanceId = instanceSequence.incrementAndGet();
         ValidateData.INSTANCE.getRegistryItem().registryInstance(new RegistryItem.Instance(request.getApplicationId(), instanceId));
 
