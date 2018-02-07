@@ -20,6 +20,7 @@ public class ValidateData {
 
     public static void clearData(){
         System.out.println("Clear Data");
-        INSTANCE = new ValidateData();
+        INSTANCE.segmentItem = new SegmentItems();
+        INSTANCE.registryItem.getOperationNames().clear();
     }
 }

@@ -4,7 +4,7 @@
 
     <groupId>org.skywalking</groupId>
     <artifactId>skywalking-mock-collector</artifactId>
-    <version>1.0-2017</version>
+    <version>3.2.6-2017</version>
     <packaging>jar</packaging>
 
     <name>skywalking-mock-collector</name>
@@ -83,6 +83,11 @@
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
             <version>2.8.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.18</version>
         </dependency>
     </dependencies>
 

@@ -1,21 +1,18 @@
 syntax = "proto3";
 
 option java_multiple_files = true;
-option java_package = "org.skywalking.apm.network.proto";
+option java_package = "org.apache.skywalking.apm.network.proto";
 
+import "Common.proto";
 import "Downstream.proto";
 
-//discovery service for application instance, this service is called when application starts
-//or http client connection switch to another collector server instance
 service InstanceDiscoveryService {
-    rpc register (ApplicationInstance) returns (ApplicationInstanceMapping) {
+    rpc registerInstance (ApplicationInstance) returns (ApplicationInstanceMapping) {
     }
 
     rpc heartbeat (ApplicationInstanceHeartbeat) returns (Downstream) {
     }
 
-    rpc registerRecover (ApplicationInstanceRecover) returns (Downstream) {
-    }
 }
 
 message ApplicationInstance {
@@ -71,4 +68,5 @@ message ServiceNameMappingElement {
 message ServiceNameElement {
     string serviceName = 1;
     int32 applicationId = 2;
+    SpanType srcSpanType = 3;
 }

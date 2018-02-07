@@ -2,8 +2,11 @@ package org.skywalking.apm.mock.collector.entity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import org.apache.skywalking.apm.network.proto.SpanType;
 
 public class RegistryItem {
     /**
@@ -13,7 +16,7 @@ public class RegistryItem {
     /**
      * applicationCode, operationName
      */
-    private final Map<String, List<String>> operationNames;
+    private final Map<String, Set<String>> operationNames;
     /**
      * applicationCode, instanceId
      */
@@ -36,9 +39,9 @@ public class RegistryItem {
 
     public void registryOperationName(OperationName operationName) {
         String applicationCode = findApplicationCode(operationName.applicationId);
-        List<String> operationNameList = operationNames.get(applicationCode);
+        Set<String> operationNameList = operationNames.get(applicationCode);
         if (operationNameList == null) {
-            operationNameList = new ArrayList<String>();
+            operationNameList = new HashSet<>();
             operationNames.put(applicationCode, operationNameList);
         }
         operationNameList.add(operationName.operationName);
@@ -81,10 +84,13 @@ public class RegistryItem {
     public static class OperationName {
         int applicationId;
         String operationName;
+        String srcType;
 
-        public OperationName(int applicationId, String operationName) {
+        public OperationName(int applicationId, String operationName,
+            SpanType type) {
             this.applicationId = applicationId;
             this.operationName = operationName;
+            this.srcType = type.name();
         }
     }
 
@@ -120,7 +126,7 @@ public class RegistryItem {
         return applications;
     }
 
-    public Map<String, List<String>> getOperationNames() {
+    public Map<String, Set<String>> getOperationNames() {
         return operationNames;
     }
 

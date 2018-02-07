@@ -4,16 +4,17 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import io.grpc.stub.StreamObserver;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.skywalking.apm.network.proto.Downstream;
+import org.apache.skywalking.apm.network.proto.KeyWithStringValue;
+import org.apache.skywalking.apm.network.proto.LogMessage;
+import org.apache.skywalking.apm.network.proto.SpanObject;
+import org.apache.skywalking.apm.network.proto.TraceSegmentObject;
+import org.apache.skywalking.apm.network.proto.TraceSegmentReference;
+import org.apache.skywalking.apm.network.proto.TraceSegmentServiceGrpc;
+import org.apache.skywalking.apm.network.proto.UpstreamSegment;
 import org.skywalking.apm.mock.collector.entity.Segment;
+import org.skywalking.apm.mock.collector.entity.Span;
 import org.skywalking.apm.mock.collector.entity.ValidateData;
-import org.skywalking.apm.network.proto.Downstream;
-import org.skywalking.apm.network.proto.KeyWithStringValue;
-import org.skywalking.apm.network.proto.LogMessage;
-import org.skywalking.apm.network.proto.SpanObject;
-import org.skywalking.apm.network.proto.TraceSegmentObject;
-import org.skywalking.apm.network.proto.TraceSegmentReference;
-import org.skywalking.apm.network.proto.TraceSegmentServiceGrpc;
-import org.skywalking.apm.network.proto.UpstreamSegment;
 
 public class MockTraceSegmentService extends TraceSegmentServiceGrpc.TraceSegmentServiceImplBase {
 
@@ -22,16 +23,16 @@ public class MockTraceSegmentService extends TraceSegmentServiceGrpc.TraceSegmen
     @Override
     public StreamObserver<UpstreamSegment> collect(final StreamObserver<Downstream> responseObserver) {
         return new StreamObserver<UpstreamSegment>() {
-            public void onNext(UpstreamSegment value) {
+            @Override public void onNext(UpstreamSegment value) {
                 try {
                     TraceSegmentObject traceSegmentObject = TraceSegmentObject.parseFrom(value.getSegment());
-                    Segment.SegmentBuilder segmentBuilder = Segment.SegmentBuilder.newBuilder(traceSegmentObject.getTraceSegmentId());
+                    Segment.SegmentBuilder segmentBuilder = Segment.builder().segmentId(traceSegmentObject.getTraceSegmentId());
                     logger.debug("Receive segment: Application[{}], TraceSegmentId[{}]",
                         traceSegmentObject.getApplicationId(),
                         traceSegmentObject.getTraceSegmentId());
 
                     for (SpanObject spanObject : traceSegmentObject.getSpansList()) {
-                        Segment.SpanBuilder spanBuilder = Segment.SpanBuilder.newBuilder(spanObject.getOperationName()).parentSpanId(spanObject.getParentSpanId())
+                        Span.SpanBuilder spanBuilder = Span.builder().operationName(spanObject.getOperationName()).parentSpanId(spanObject.getParentSpanId())
                             .spanId(spanObject.getSpanId()).componentId(spanObject.getComponentId()).componentName(spanObject.getComponent())
                             .spanLayer(spanObject.getSpanLayer().toString()).endTime(spanObject.getEndTime())
                             .startTime(spanObject.getStartTime()).spanType(spanObject.getSpanType().toString())
@@ -45,12 +46,11 @@ public class MockTraceSegmentService extends TraceSegmentServiceGrpc.TraceSegmen
                             spanBuilder.tags(tags.getKey(), tags.getValue());
                         }
 
-                        segmentBuilder.addSpan(spanBuilder.build());
-                    }
+                        for (TraceSegmentReference ref : spanObject.getRefsList()) {
+                            spanBuilder.ref(new Span.SegmentRef(ref));
+                        }
 
-                    for (TraceSegmentReference ref : traceSegmentObject.getRefsList()) {
-                        Segment.SegmentRef segmentRef = Segment.SegmentRefBuilder.newBuilder(ref).build();
-                        segmentBuilder.addRefs(segmentRef);
+                        segmentBuilder.addSpan(spanBuilder);
                     }
 
                     ValidateData.INSTANCE.getSegmentItem().addSegmentItem(traceSegmentObject.getApplicationId(), segmentBuilder.build());
@@ -59,11 +59,11 @@ public class MockTraceSegmentService extends TraceSegmentServiceGrpc.TraceSegmen
                 }
             }
 
-            public void onError(Throwable t) {
+            @Override public void onError(Throwable t) {
 
             }
 
-            public void onCompleted() {
+            @Override public void onCompleted() {
                 responseObserver.onNext(Downstream.getDefaultInstance());
                 responseObserver.onCompleted();
             }
