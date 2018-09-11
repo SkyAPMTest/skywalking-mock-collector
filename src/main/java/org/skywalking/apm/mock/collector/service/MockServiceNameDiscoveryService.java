@@ -1,10 +1,10 @@
 package org.skywalking.apm.mock.collector.service;
 
 import io.grpc.stub.StreamObserver;
-import org.apache.skywalking.apm.network.proto.ServiceNameCollection;
-import org.apache.skywalking.apm.network.proto.ServiceNameDiscoveryServiceGrpc;
-import org.apache.skywalking.apm.network.proto.ServiceNameElement;
-import org.apache.skywalking.apm.network.proto.ServiceNameMappingCollection;
+import org.apache.skywalking.apm.network.language.agent.ServiceNameCollection;
+import org.apache.skywalking.apm.network.language.agent.ServiceNameDiscoveryServiceGrpc;
+import org.apache.skywalking.apm.network.language.agent.ServiceNameElement;
+import org.apache.skywalking.apm.network.language.agent.ServiceNameMappingCollection;
 import org.skywalking.apm.mock.collector.entity.RegistryItem;
 import org.skywalking.apm.mock.collector.entity.ValidateData;
 

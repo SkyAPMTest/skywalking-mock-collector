@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.apache.skywalking.apm.network.proto.SpanType;
+import org.apache.skywalking.apm.network.language.agent.SpanType;
 
 public class RegistryItem {
     /**

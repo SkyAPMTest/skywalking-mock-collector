@@ -2,11 +2,11 @@ package org.skywalking.apm.mock.collector.service;
 
 import io.grpc.stub.StreamObserver;
 import java.util.concurrent.atomic.AtomicInteger;
-import org.apache.skywalking.apm.network.proto.ApplicationInstance;
-import org.apache.skywalking.apm.network.proto.ApplicationInstanceHeartbeat;
-import org.apache.skywalking.apm.network.proto.ApplicationInstanceMapping;
-import org.apache.skywalking.apm.network.proto.Downstream;
-import org.apache.skywalking.apm.network.proto.InstanceDiscoveryServiceGrpc;
+import org.apache.skywalking.apm.network.language.agent.ApplicationInstance;
+import org.apache.skywalking.apm.network.language.agent.ApplicationInstanceHeartbeat;
+import org.apache.skywalking.apm.network.language.agent.ApplicationInstanceMapping;
+import org.apache.skywalking.apm.network.language.agent.Downstream;
+import org.apache.skywalking.apm.network.language.agent.InstanceDiscoveryServiceGrpc;
 import org.skywalking.apm.mock.collector.entity.RegistryItem;
 import org.skywalking.apm.mock.collector.entity.ValidateData;
 

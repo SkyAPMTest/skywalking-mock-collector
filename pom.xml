@@ -4,7 +4,7 @@
 
     <groupId>org.skywalking</groupId>
     <artifactId>skywalking-mock-collector</artifactId>
-    <version>3.2.6-2017</version>
+    <version>6.0.0</version>
     <packaging>jar</packaging>
 
     <name>skywalking-mock-collector</name>

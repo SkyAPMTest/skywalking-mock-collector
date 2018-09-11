@@ -24,9 +24,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
-import org.apache.skywalking.apm.network.proto.KeyWithStringValue;
-import org.apache.skywalking.apm.network.proto.TraceSegmentReference;
-import org.apache.skywalking.apm.network.proto.UniqueId;
+import org.apache.skywalking.apm.network.language.agent.KeyWithStringValue;
+import org.apache.skywalking.apm.network.language.agent.TraceSegmentReference;
+import org.apache.skywalking.apm.network.language.agent.UniqueId;
 
 @Builder
 @ToString
