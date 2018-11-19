@@ -4,52 +4,49 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import io.grpc.stub.StreamObserver;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.skywalking.apm.network.common.Commands;
-import org.apache.skywalking.apm.network.common.KeyStringValuePair;
 import org.apache.skywalking.apm.network.language.agent.*;
-import org.apache.skywalking.apm.network.language.agent.v2.*;
 import org.skywalking.apm.mock.collector.entity.Segment;
 import org.skywalking.apm.mock.collector.entity.Span;
 import org.skywalking.apm.mock.collector.entity.ValidateData;
 
-public class MockTraceSegmentService extends TraceSegmentReportServiceGrpc.TraceSegmentReportServiceImplBase {
+public class MockTraceSegmentV1Service extends TraceSegmentServiceGrpc.TraceSegmentServiceImplBase {
 
     private Logger logger = LogManager.getLogger(MockTraceSegmentService.class);
 
     @Override
-    public StreamObserver<UpstreamSegment> collect(StreamObserver<Commands> responseObserver) {
+    public StreamObserver<UpstreamSegment> collect(final StreamObserver<Downstream> responseObserver) {
         return new StreamObserver<UpstreamSegment>() {
             @Override public void onNext(UpstreamSegment value) {
                 try {
-                    SegmentObject traceSegmentObject = SegmentObject.parseFrom(value.getSegment());
+                    TraceSegmentObject traceSegmentObject = TraceSegmentObject.parseFrom(value.getSegment());
                     Segment.SegmentBuilder segmentBuilder = Segment.builder().segmentId(traceSegmentObject.getTraceSegmentId());
-                    logger.debug("Receive segment: ServiceID[{}], TraceSegmentId[{}]",
-                            traceSegmentObject.getServiceId(),
+                    logger.debug("Receive segment: Application[{}], TraceSegmentId[{}]",
+                            traceSegmentObject.getApplicationId(),
                             traceSegmentObject.getTraceSegmentId());
 
-                    for (SpanObjectV2 spanObject : traceSegmentObject.getSpansList()) {
+                    for (SpanObject spanObject : traceSegmentObject.getSpansList()) {
                         Span.SpanBuilder spanBuilder = Span.builder().operationName(spanObject.getOperationName()).parentSpanId(spanObject.getParentSpanId())
                                 .spanId(spanObject.getSpanId()).componentId(spanObject.getComponentId()).componentName(spanObject.getComponent())
                                 .spanLayer(spanObject.getSpanLayer().toString()).endTime(spanObject.getEndTime())
                                 .startTime(spanObject.getStartTime()).spanType(spanObject.getSpanType().toString())
                                 .peer(spanObject.getPeer()).peerId(spanObject.getPeerId()).operationId(spanObject.getOperationNameId());
 
-                        for (Log logMessage : spanObject.getLogsList()) {
-                            spanBuilder.logEvent(logMessage.getDataList());
+                        for (LogMessage logMessage : spanObject.getLogsList()) {
+                            spanBuilder.logEventV1(logMessage.getDataList());
                         }
 
-                        for (KeyStringValuePair tags : spanObject.getTagsList()) {
+                        for (KeyWithStringValue tags : spanObject.getTagsList()) {
                             spanBuilder.tags(tags.getKey(), tags.getValue());
                         }
 
-                        for (SegmentReference ref : spanObject.getRefsList()) {
+                        for (TraceSegmentReference ref : spanObject.getRefsList()) {
                             spanBuilder.ref(new Span.SegmentRef(ref));
                         }
 
                         segmentBuilder.addSpan(spanBuilder);
                     }
 
-                    ValidateData.INSTANCE.getSegmentItem().addSegmentItem(traceSegmentObject.getServiceId(), segmentBuilder.build());
+                    ValidateData.INSTANCE.getSegmentItem().addSegmentItem(traceSegmentObject.getApplicationId(), segmentBuilder.build());
                 } catch (InvalidProtocolBufferException e) {
                     e.printStackTrace();
                 }
@@ -60,7 +57,7 @@ public class MockTraceSegmentService extends TraceSegmentReportServiceGrpc.Trace
             }
 
             @Override public void onCompleted() {
-                responseObserver.onNext(Commands.newBuilder().build());
+                responseObserver.onNext(Downstream.getDefaultInstance());
                 responseObserver.onCompleted();
             }
         };

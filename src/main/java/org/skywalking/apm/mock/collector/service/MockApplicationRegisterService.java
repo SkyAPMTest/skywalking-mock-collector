@@ -5,10 +5,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.skywalking.apm.network.proto.Application;
-import org.apache.skywalking.apm.network.proto.ApplicationMapping;
-import org.apache.skywalking.apm.network.proto.ApplicationRegisterServiceGrpc;
-import org.apache.skywalking.apm.network.proto.KeyWithIntegerValue;
+import org.apache.skywalking.apm.network.language.agent.Application;
+import org.apache.skywalking.apm.network.language.agent.ApplicationMapping;
+import org.apache.skywalking.apm.network.language.agent.ApplicationRegisterServiceGrpc;
+import org.apache.skywalking.apm.network.language.agent.KeyWithIntegerValue;
 import org.skywalking.apm.mock.collector.entity.RegistryItem;
 import org.skywalking.apm.mock.collector.entity.ValidateData;
 
@@ -37,7 +37,7 @@ public class MockApplicationRegisterService extends ApplicationRegisterServiceGr
             applicationId = currentId.incrementAndGet();
             applicationMapping.put(applicationCode, applicationId);
             ValidateData.INSTANCE.getRegistryItem().registryApplication(new RegistryItem.Application(applicationCode,
-                applicationId));
+                    applicationId));
         }
 
         builder.setApplication(KeyWithIntegerValue.newBuilder().setKey(applicationCode).setValue(applicationId));

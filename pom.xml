@@ -4,7 +4,7 @@
 
     <groupId>org.skywalking</groupId>
     <artifactId>skywalking-mock-collector</artifactId>
-    <version>3.2.6-2017</version>
+    <version>6.0.0-2018</version>
     <packaging>jar</packaging>
 
     <name>skywalking-mock-collector</name>
@@ -128,6 +128,11 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>2.7</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

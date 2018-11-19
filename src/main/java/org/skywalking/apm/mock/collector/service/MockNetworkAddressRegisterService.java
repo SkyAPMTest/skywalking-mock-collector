@@ -19,9 +19,9 @@
 package org.skywalking.apm.mock.collector.service;
 
 import io.grpc.stub.StreamObserver;
-import org.apache.skywalking.apm.network.proto.NetworkAddressMappings;
-import org.apache.skywalking.apm.network.proto.NetworkAddressRegisterServiceGrpc;
-import org.apache.skywalking.apm.network.proto.NetworkAddresses;
+import org.apache.skywalking.apm.network.language.agent.NetworkAddressMappings;
+import org.apache.skywalking.apm.network.language.agent.NetworkAddressRegisterServiceGrpc;
+import org.apache.skywalking.apm.network.language.agent.NetworkAddresses;
 
 public class MockNetworkAddressRegisterService extends NetworkAddressRegisterServiceGrpc.NetworkAddressRegisterServiceImplBase {
 

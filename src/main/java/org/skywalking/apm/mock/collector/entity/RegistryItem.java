@@ -6,7 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.apache.skywalking.apm.network.proto.SpanType;
+
+import org.apache.skywalking.apm.network.language.agent.SpanType;
 
 public class RegistryItem {
     /**
@@ -73,7 +74,7 @@ public class RegistryItem {
         for (Map.Entry<String, List<Integer>> entry : instanceMapping.entrySet()) {
             if (entry.getValue().contains(heartBeat.instanceID)) {
                 Integer count = heartBeats.get(entry.getKey());
-                if (count == null) {
+                if (count != null) {
                     heartBeats.put(entry.getKey(), 0);
                     heartBeats.put(entry.getKey(), count++);
                 }
@@ -84,13 +85,10 @@ public class RegistryItem {
     public static class OperationName {
         int applicationId;
         String operationName;
-        String srcType;
 
-        public OperationName(int applicationId, String operationName,
-            SpanType type) {
+        public OperationName(int applicationId, String operationName) {
             this.applicationId = applicationId;
             this.operationName = operationName;
-            this.srcType = type.name();
         }
     }
 
