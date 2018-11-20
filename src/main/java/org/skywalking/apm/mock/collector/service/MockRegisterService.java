@@ -11,13 +11,13 @@ import org.skywalking.apm.mock.collector.entity.ValidateData;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static org.skywalking.apm.mock.collector.service.Sequences.APPLICATION_MAPPING;
+import static org.skywalking.apm.mock.collector.service.Sequences.INSTANCE_SEQUENCE;
+import static org.skywalking.apm.mock.collector.service.Sequences.SERVICE_SEQUENCE;
+
 public class MockRegisterService extends RegisterGrpc.RegisterImplBase {
 
     private Logger logger = LogManager.getLogger(MockTraceSegmentService.class);
-    private AtomicInteger currentId = new AtomicInteger(1);
-    private ConcurrentHashMap<String, Integer> applicationMapping = new ConcurrentHashMap<String, Integer>();
-
-    private AtomicInteger instanceSequence = new AtomicInteger();
 
 
     @Override
@@ -45,7 +45,7 @@ public class MockRegisterService extends RegisterGrpc.RegisterImplBase {
         }
 
         for (ServiceInstance serviceInstance : request.getInstancesList()) {
-            int instanceId = instanceSequence.incrementAndGet();
+            int instanceId = INSTANCE_SEQUENCE.incrementAndGet();
             ValidateData.INSTANCE.getRegistryItem().registryInstance(new RegistryItem.Instance(serviceInstance.getServiceId(), instanceId));
 
             responseObserver.onNext(ServiceInstanceRegisterMapping.newBuilder().addServiceInstances(KeyIntValuePair.newBuilder()
@@ -74,10 +74,10 @@ public class MockRegisterService extends RegisterGrpc.RegisterImplBase {
                 return;
             }
 
-            Integer applicationId = applicationMapping.get(applicationCode);
+            Integer applicationId = APPLICATION_MAPPING.get(applicationCode);
             if (applicationId == null) {
-                applicationId = currentId.incrementAndGet();
-                applicationMapping.put(applicationCode, applicationId);
+                applicationId = SERVICE_SEQUENCE.incrementAndGet();
+                APPLICATION_MAPPING.put(applicationCode, applicationId);
                 ValidateData.INSTANCE.getRegistryItem().registryApplication(new RegistryItem.Application(applicationCode,
                         applicationId));
             }
