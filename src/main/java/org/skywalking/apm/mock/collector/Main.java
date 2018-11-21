@@ -2,32 +2,30 @@ package org.skywalking.apm.mock.collector;
 
 import io.grpc.netty.NettyServerBuilder;
 import io.netty.channel.local.LocalAddress;
+
 import java.net.InetSocketAddress;
+
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.skywalking.apm.mock.collector.service.ClearReceiveDataService;
-import org.skywalking.apm.mock.collector.service.MockNetworkAddressRegisterService;
-import org.skywalking.apm.mock.collector.service.MockServiceNameDiscoveryService;
-import org.skywalking.apm.mock.collector.service.ReceiveDataService;
-import org.skywalking.apm.mock.collector.service.GrpcAddressHttpService;
-import org.skywalking.apm.mock.collector.service.MockApplicationRegisterService;
-import org.skywalking.apm.mock.collector.service.MockInstanceDiscoveryService;
-import org.skywalking.apm.mock.collector.service.MockJVMMetricsService;
-import org.skywalking.apm.mock.collector.service.MockTraceSegmentService;
+import org.skywalking.apm.mock.collector.service.*;
 
 public class Main {
     public static void main(String[] args) throws Exception {
         NettyServerBuilder.forAddress(LocalAddress.ANY).forPort(19876)
-            .maxConcurrentCallsPerConnection(12).maxMessageSize(16777216)
-            .addService(new MockApplicationRegisterService())
-            .addService(new MockInstanceDiscoveryService())
-            .addService(new MockJVMMetricsService())
-            .addService(new MockNetworkAddressRegisterService())
-            .addService(new MockServiceNameDiscoveryService())
-            .addService(new MockTraceSegmentService()).build().start();
+                .maxConcurrentCallsPerConnection(12).maxMessageSize(16777216)
+                .addService(new MockRegisterService())
+                .addService(new MockInstancePingService())
+                .addService(new MockJVMMetricsService())
+                .addService(new MockTraceSegmentV1Service())
+                .addService(new MockApplicationRegisterService())
+                .addService(new MockInstanceDiscoveryService())
+                .addService(new MockJVMMetricsV1Service())
+                .addService(new MockNetworkAddressRegisterService())
+                .addService(new MockServiceNameDiscoveryService())
+                .addService(new MockTraceSegmentService()).build().start();
 
         Server jettyServer = new Server(new InetSocketAddress("0.0.0.0",
-            Integer.valueOf(12800)));
+                Integer.valueOf(12800)));
         String contextPath = "/";
         ServletContextHandler servletContextHandler = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
         servletContextHandler.setContextPath(contextPath);
