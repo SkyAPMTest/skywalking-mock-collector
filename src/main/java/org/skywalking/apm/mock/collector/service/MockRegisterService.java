@@ -8,12 +8,9 @@ import org.apache.skywalking.apm.network.register.v2.*;
 import org.skywalking.apm.mock.collector.entity.RegistryItem;
 import org.skywalking.apm.mock.collector.entity.ValidateData;
 
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import static org.skywalking.apm.mock.collector.service.Sequences.APPLICATION_MAPPING;
+import static org.skywalking.apm.mock.collector.service.Sequences.SERVICE_MAPPING;
 import static org.skywalking.apm.mock.collector.service.Sequences.INSTANCE_SEQUENCE;
-import static org.skywalking.apm.mock.collector.service.Sequences.SERVICE_SEQUENCE;
+import static org.skywalking.apm.mock.collector.service.Sequences.ENDPOINT_SEQUENCE;
 
 public class MockRegisterService extends RegisterGrpc.RegisterImplBase {
 
@@ -74,10 +71,10 @@ public class MockRegisterService extends RegisterGrpc.RegisterImplBase {
                 return;
             }
 
-            Integer applicationId = APPLICATION_MAPPING.get(applicationCode);
+            Integer applicationId = SERVICE_MAPPING.get(applicationCode);
             if (applicationId == null) {
-                applicationId = SERVICE_SEQUENCE.incrementAndGet();
-                APPLICATION_MAPPING.put(applicationCode, applicationId);
+                applicationId = ENDPOINT_SEQUENCE.incrementAndGet();
+                SERVICE_MAPPING.put(applicationCode, applicationId);
                 ValidateData.INSTANCE.getRegistryItem().registryApplication(new RegistryItem.Application(applicationCode,
                         applicationId));
             }

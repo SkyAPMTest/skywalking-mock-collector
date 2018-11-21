@@ -2,9 +2,6 @@ package org.skywalking.apm.mock.collector.service;
 
 import io.grpc.stub.StreamObserver;
 
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.skywalking.apm.network.language.agent.Application;
@@ -14,8 +11,8 @@ import org.apache.skywalking.apm.network.language.agent.KeyWithIntegerValue;
 import org.skywalking.apm.mock.collector.entity.RegistryItem;
 import org.skywalking.apm.mock.collector.entity.ValidateData;
 
-import static org.skywalking.apm.mock.collector.service.Sequences.APPLICATION_MAPPING;
-import static org.skywalking.apm.mock.collector.service.Sequences.SERVICE_SEQUENCE;
+import static org.skywalking.apm.mock.collector.service.Sequences.SERVICE_MAPPING;
+import static org.skywalking.apm.mock.collector.service.Sequences.ENDPOINT_SEQUENCE;
 
 /**
  * Created by xin on 2017/7/11.
@@ -35,10 +32,10 @@ public class MockApplicationRegisterService extends ApplicationRegisterServiceGr
             return;
         }
 
-        Integer applicationId = APPLICATION_MAPPING.get(applicationCode);
+        Integer applicationId = SERVICE_MAPPING.get(applicationCode);
         if (applicationId == null) {
-            applicationId = SERVICE_SEQUENCE.incrementAndGet();
-            APPLICATION_MAPPING.put(applicationCode, applicationId);
+            applicationId = ENDPOINT_SEQUENCE.incrementAndGet();
+            SERVICE_MAPPING.put(applicationCode, applicationId);
             ValidateData.INSTANCE.getRegistryItem().registryApplication(new RegistryItem.Application(applicationCode,
                     applicationId));
         }

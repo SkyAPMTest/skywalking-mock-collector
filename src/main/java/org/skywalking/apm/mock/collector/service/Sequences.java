@@ -7,7 +7,7 @@ public class Sequences {
 
     public static final AtomicInteger INSTANCE_SEQUENCE = new AtomicInteger();
 
-    public static final AtomicInteger SERVICE_SEQUENCE = new AtomicInteger(1);
+    public static final AtomicInteger ENDPOINT_SEQUENCE = new AtomicInteger(1);
 
-    public static final ConcurrentHashMap<String, Integer> APPLICATION_MAPPING = new ConcurrentHashMap<String, Integer>();
+    public static final ConcurrentHashMap<String, Integer> SERVICE_MAPPING = new ConcurrentHashMap<String, Integer>();
 }
